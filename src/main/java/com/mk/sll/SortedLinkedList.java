@@ -57,6 +57,7 @@ public class SortedLinkedList<E> implements List<E> {
 
         //defensive copy, because we'll depend on sorting
         List<E> newElementsCopy = new ArrayList<>(newElements);
+        //validates nullability
         newElementsCopy.sort(comparator);
 
         ListIterator<E> listIterator = delegate.listIterator();

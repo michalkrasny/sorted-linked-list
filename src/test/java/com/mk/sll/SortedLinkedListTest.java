@@ -158,6 +158,18 @@ public class SortedLinkedListTest {
         assertThat(tested).containsExactly("B");
     }
 
+    @Test
+    public void putAll_argumentNotModified() {
+        List<String> insertedList = List.of("B", "D", "C");
+
+        tested.putAll(insertedList);
+
+        assertThat(tested).containsExactly("B", "C", "D");
+        // insertedList is unmodifiable, so it would fail before this line anyway, but this assertion makes the test
+        // more readable
+        assertThat(insertedList).containsExactly("B", "D", "C");
+    }
+
 
     @Test
     public void putAll_oneNewElementIntoExistingList() {
