@@ -15,12 +15,19 @@ import java.util.stream.Stream;
 @SuppressWarnings("NullableProblems")
 public class SortedLinkedList<E> implements List<E> {
 
-    private final LinkedList<E> delegate = new LinkedList<>();
+    private final LinkedList<E> delegate;
 
     private final Comparator<E> comparator;
 
     public SortedLinkedList(Comparator<E> comparator) {
         this.comparator = comparator;
+        delegate = new LinkedList<>();
+    }
+
+    public SortedLinkedList(Comparator<E> comparator, Collection<? extends E> collection) {
+        this.comparator = comparator;
+        delegate = new LinkedList<>(collection);
+        delegate.sort(comparator);
     }
 
     /**
@@ -126,27 +133,50 @@ public class SortedLinkedList<E> implements List<E> {
         throw new UnsupportedOperationException("Sorting by different comparator is not supported.");
     }
 
+
+    /**
+     * Unsupported operation, because it would break List contract that says that added element must be added to the
+     * end of the list. Position in {@link SortedLinkedList} is defined by comparator.
+     */
     @Override
     public boolean add(E e) {
         throw new UnsupportedOperationException("Use put instead.");
     }
 
+    /**
+     * Unsupported operation, because it would break List contract that says that added element must be added to the
+     * end of the list. Position in {@link SortedLinkedList} is defined by comparator.
+     */
     @Override
     public void add(int index, E element) {
         throw new UnsupportedOperationException("Use put instead.");
     }
 
+    /**
+     * Unsupported operation, because it would break List contract that says that added element must be added to the
+     * end of the list. Position in {@link SortedLinkedList} is defined by comparator.
+     */
     @Override
     public boolean addAll(Collection<? extends E> c) {
         throw new UnsupportedOperationException("Use putAll instead.");
     }
 
 
+    /**
+     * Unsupported operation, because it would break List contract that says that added element must be added to the
+     * end of the list. Position in {@link SortedLinkedList} is defined by comparator.
+     *
+     */
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         throw new UnsupportedOperationException("Use putAll instead.");
     }
 
+    /**
+     * Unsupported operation. Set is supposed to change element on a particular position but change of the position
+     * is not expected. Position in {@link SortedLinkedList} is defined by comparator.
+     *
+     */
     @Override
     public E set(int index, E element) {
         throw new UnsupportedOperationException();

@@ -45,6 +45,15 @@ public class SortedLinkedListTest {
     }
 
     @Test
+    public void constructorUsingCollectionSorts() {
+        List<String> originalCollection = List.of("C", "A", "B");
+        tested = new SortedLinkedList<>(STRING_COMPARATOR_DEFAULT, originalCollection);
+        assertThat(tested).containsExactly("A", "B", "C");
+        assertThat(originalCollection).containsExactly("C", "A", "B");
+    }
+
+
+    @Test
     public void put_oneElement() {
         boolean result = tested.put("A");
         assertThat(result).isTrue();
