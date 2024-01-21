@@ -16,6 +16,8 @@ public class SortedLinkedListTest {
 
     public static final Comparator<String> STRING_COMPARATOR_DEFAULT = Comparator.comparing((String x) -> x);
 
+    public static final Comparator<Integer> INTEGER_COMPARATOR_DEFAULT = Comparator.comparing((Integer x) -> x);
+
     public static final Comparator<String> STRING_COMPARATOR_SUPPORTING_NULL = (o1, o2) -> {
 
         //same null or non-null instance
@@ -41,7 +43,6 @@ public class SortedLinkedListTest {
     public void setUp() {
         tested = new SortedLinkedList<>(STRING_COMPARATOR_DEFAULT);
     }
-
 
     @Test
     public void put_oneElement() {
@@ -70,8 +71,8 @@ public class SortedLinkedListTest {
     public void put_moreSameElements() {
         tested.put("C");
         tested.put("B");
-        tested.put("A");
-        assertThat(tested).containsExactly("A", "B", "C");
+        tested.put("B");
+        assertThat(tested).containsExactly("B", "B", "C");
     }
 
     @Test
@@ -204,6 +205,23 @@ public class SortedLinkedListTest {
         assertThat(result).isTrue();
 
         assertThat(tested).containsExactly("A", "A", "B", "B");
+    }
+
+    @Test
+    public void put_integer() {
+        SortedLinkedList<Integer> testedInteger = new SortedLinkedList<>(INTEGER_COMPARATOR_DEFAULT);
+        testedInteger.put(3);
+        testedInteger.put(2);
+        testedInteger.put(1);
+        assertThat(testedInteger).containsExactly(1, 2, 3);
+    }
+
+
+    @Test
+    public void putAll_integer() {
+        SortedLinkedList<Integer> testedInteger = new SortedLinkedList<>(INTEGER_COMPARATOR_DEFAULT);
+        testedInteger.putAll(List.of(3, 2, 1));
+        assertThat(testedInteger).containsExactly(1, 2, 3);
     }
 
     //tests for unsupported methods
