@@ -190,6 +190,49 @@ public class SortedLinkedListTest {
         boolean result = tested.putAll(List.of("A", "B"));
         assertThat(result).isTrue();
 
-        assertThat(tested).containsExactly("A","A","B", "B");
+        assertThat(tested).containsExactly("A", "A", "B", "B");
     }
+
+    //tests for unsupported methods
+
+    @Test
+    public void sort_unsupported() {
+        assertThatThrownBy(() -> tested.sort(STRING_COMPARATOR_DEFAULT)).isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @Test
+    public void add_unsupported() {
+        assertThatThrownBy(() -> tested.add("A")).isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @Test
+    public void addAtIndex_unsupported() {
+        assertThatThrownBy(() -> tested.add(0, "A")).isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @Test
+    public void addAll_unsupported() {
+        List<String> list = List.of("A");
+        assertThatThrownBy(() -> tested.addAll(list)).isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @Test
+    public void addAllAtIndex_unsupported() {
+        List<String> list = List.of("A");
+        assertThatThrownBy(() -> tested.addAll(0, list)).isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @Test
+    public void set_unsupported() {
+        assertThatThrownBy(() -> tested.set(0, "A")).isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @Test
+    public void replaceAll_unsupported() {
+        assertThatThrownBy(() -> tested.replaceAll(null)).isInstanceOf(UnsupportedOperationException.class);
+    }
+
+
+    //smoke tests for delegated methods
+
 }
