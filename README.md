@@ -44,3 +44,11 @@ Effective Java by Joshua Bloch (Item 47) that you should prefer standard librari
 If this was an internal library, I would consider using libraries like Lombok to implement the delegate. If this was
 a library made for public usage, I wouldn't use third party libraries if possible. Because I don't know what the target environment
 will look like, I won't be using any third party libraries.
+
+
+# Build
+
+run command
+```
+gradle clean build
+```
