@@ -207,6 +207,8 @@ public class SortedLinkedListTest {
         assertThat(tested).containsExactly("A", "A", "B", "B");
     }
 
+    //integers
+
     @Test
     public void put_integer() {
         SortedLinkedList<Integer> testedInteger = new SortedLinkedList<>(INTEGER_COMPARATOR_DEFAULT);
