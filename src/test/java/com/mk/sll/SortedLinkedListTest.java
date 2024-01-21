@@ -35,8 +35,8 @@ public class SortedLinkedListTest {
     private SortedLinkedList<String> tested;
 
     @Before
-    public void setUp() throws Exception {
-        tested = new SortedLinkedList(STRING_COMPARATOR_DEFAULT);
+    public void setUp() {
+        tested = new SortedLinkedList<>(STRING_COMPARATOR_DEFAULT);
     }
 
 
