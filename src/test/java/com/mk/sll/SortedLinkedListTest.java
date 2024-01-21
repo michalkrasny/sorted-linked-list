@@ -207,7 +207,20 @@ public class SortedLinkedListTest {
         assertThat(tested).containsExactly("A", "A", "B", "B");
     }
 
-    //integers
+
+    @Test
+    public void replaceAll() {
+        tested.put("A");
+        tested.put("B");
+
+        tested.replaceAll(element -> element.equals("A") ? "X" : element);
+
+        //A was changed to X and was correctly ordered
+        assertThat(tested).containsExactly("B", "X");
+    }
+
+
+    // Integers
 
     @Test
     public void put_integer() {
@@ -225,6 +238,7 @@ public class SortedLinkedListTest {
         testedInteger.putAll(List.of(3, 2, 1));
         assertThat(testedInteger).containsExactly(1, 2, 3);
     }
+
 
     //tests for unsupported methods
 
@@ -260,13 +274,7 @@ public class SortedLinkedListTest {
         assertThatThrownBy(() -> tested.set(0, "A")).isInstanceOf(UnsupportedOperationException.class);
     }
 
-    @Test
-    public void replaceAll_unsupported() {
-        assertThatThrownBy(() -> tested.replaceAll(null)).isInstanceOf(UnsupportedOperationException.class);
-    }
-
-
-    //Smoke tests for delegated methods. We test that they are delegated, but otherwise we trust delegated implementation.  
+    //Smoke tests for delegated methods. We test that they are delegated, but otherwise we trust delegated implementation.
 
     @Test
     public void size() {

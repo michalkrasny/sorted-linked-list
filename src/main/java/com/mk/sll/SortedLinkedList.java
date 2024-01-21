@@ -8,7 +8,7 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 /**
- * Class similar to @{@link LinkedList}, but keeps
+ * Class similar to {@link LinkedList}, but keeps elements ordered.
  *
  * @param <E>
  */
@@ -109,6 +109,12 @@ public class SortedLinkedList<E> implements List<E> {
         }
     }
 
+    @Override
+    public void replaceAll(UnaryOperator<E> operator) {
+        delegate.replaceAll(operator);
+        delegate.sort(comparator);
+    }
+
 
     //Unsupported methods - see README.md
 
@@ -117,37 +123,32 @@ public class SortedLinkedList<E> implements List<E> {
      */
     @Override
     public void sort(Comparator<? super E> c) {
-        throw new UnsupportedOperationException("Sorting by different comparator is not supported");
+        throw new UnsupportedOperationException("Sorting by different comparator is not supported.");
     }
 
     @Override
     public boolean add(E e) {
-        throw new UnsupportedOperationException("Use put instead");
+        throw new UnsupportedOperationException("Use put instead.");
     }
 
     @Override
     public void add(int index, E element) {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Use put instead.");
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        throw new UnsupportedOperationException("Use putAll instead");
+        throw new UnsupportedOperationException("Use putAll instead.");
     }
 
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Use putAll instead.");
     }
 
     @Override
     public E set(int index, E element) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void replaceAll(UnaryOperator<E> operator) {
         throw new UnsupportedOperationException();
     }
 
