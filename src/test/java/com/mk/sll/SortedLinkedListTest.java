@@ -44,7 +44,8 @@ public class SortedLinkedListTest {
 
     @Test
     public void put_oneElement() {
-        tested.put("A");
+        boolean result = tested.put("A");
+        assertThat(result).isTrue();
         assertThat(tested).containsExactly("A");
     }
 
@@ -121,34 +122,39 @@ public class SortedLinkedListTest {
 
     @Test
     public void putAll_nullInputIntoEmptyList() {
-        tested.putAll(null);
+        boolean result = tested.putAll(null);
+        assertThat(result).isFalse();
         assertThat(tested).isEmpty();
     }
 
     @Test
     public void putAll_emptyInputIntoEmptyList() {
-        tested.putAll(new ArrayList<>());
+        boolean result = tested.putAll(new ArrayList<>());
+        assertThat(result).isFalse();
         assertThat(tested).isEmpty();
     }
 
     @Test
     public void putAll_nullInputIntoNonEmptyList() {
         tested.put("A");
-        tested.putAll(null);
+        boolean result = tested.putAll(null);
+        assertThat(result).isFalse();
         assertThat(tested).containsExactly("A");
     }
 
     @Test
     public void putAll_emptyInputIntoNonEmptyList() {
         tested.put("A");
-        tested.putAll(new ArrayList<>());
+        boolean result = tested.putAll(new ArrayList<>());
+        assertThat(result).isFalse();
         assertThat(tested).containsExactly("A");
     }
 
 
     @Test
     public void putAll_oneNewElementIntoEmptyList() {
-        tested.putAll(List.of("B"));
+        boolean result = tested.putAll(List.of("B"));
+        assertThat(result).isTrue();
         assertThat(tested).containsExactly("B");
     }
 
@@ -158,7 +164,8 @@ public class SortedLinkedListTest {
         tested.put("A");
         tested.put("C");
 
-        tested.putAll(List.of("B"));
+        boolean result = tested.putAll(List.of("B"));
+        assertThat(result).isTrue();
 
         assertThat(tested).containsExactly("A", "B", "C");
     }
@@ -168,7 +175,8 @@ public class SortedLinkedListTest {
         tested.put("A");
         tested.put("B");
 
-        tested.putAll(List.of("C"));
+        boolean result = tested.putAll(List.of("C"));
+        assertThat(result).isTrue();
 
         assertThat(tested).containsExactly("A", "B", "C");
     }
@@ -179,7 +187,8 @@ public class SortedLinkedListTest {
         tested.put("A");
         tested.put("B");
 
-        tested.putAll(List.of("A","B"));
+        boolean result = tested.putAll(List.of("A", "B"));
+        assertThat(result).isTrue();
 
         assertThat(tested).containsExactly("A","A","B", "B");
     }
