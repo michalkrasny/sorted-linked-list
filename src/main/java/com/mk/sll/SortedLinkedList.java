@@ -82,7 +82,7 @@ public class SortedLinkedList<E> implements List<E> {
      *
      * @param newElement - nullable
      */
-    private void validateNullability(final E newElement) {
+    private void validateNullability(E newElement) {
         if (newElement == null) {
             // I don't want to over-engineer this. If comparator can compare nulls, then we'll allow it, otherwise not.
             //noinspection EqualsWithItself,ResultOfMethodCallIgnored,ConstantValue
