@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  *
  * @param <E>
  */
-public class SortedLinkedList<E> implements List<E>, Cloneable, java.io.Serializable {
+public class SortedLinkedList<E> implements List<E> {
 
     private final LinkedList<E> delegate = new LinkedList<>();
 
@@ -23,7 +23,6 @@ public class SortedLinkedList<E> implements List<E>, Cloneable, java.io.Serializ
     public boolean putAll(Collection<? extends E> c) {
         throw new RuntimeException("Not implemented");
     }
-
 
 
 //Unsupported methods - see README.md
@@ -192,14 +191,4 @@ public class SortedLinkedList<E> implements List<E>, Cloneable, java.io.Serializ
         delegate.forEach(action);
     }
 
-    //TODO rework
-    @Override
-    public SortedLinkedList<E> clone() {
-        try {
-            final SortedLinkedList clone = (SortedLinkedList) super.clone();
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
 }

@@ -19,8 +19,6 @@ that will enable us to insert new elements and won't break the contract.
 This interface **should not** be implemented. SortedLinkedList.java is sorted, adding a value to the beginning or the end
 of the list would be confusing, because the added value may end up somewhere else after it is sorted.  
 
-### java.lang.Cloneable, java.io.Serializable
-This interface should be implemented. It is beneficial and LinkedList implements it too, and we want to keep the similarity by design. 
 
 ## Design
 
