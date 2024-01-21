@@ -12,6 +12,7 @@ import java.util.stream.Stream;
  *
  * @param <E>
  */
+@SuppressWarnings("NullableProblems")
 public class SortedLinkedList<E> implements List<E> {
 
     private final LinkedList<E> delegate = new LinkedList<>();
@@ -28,26 +29,42 @@ public class SortedLinkedList<E> implements List<E> {
      *
      * @param newElement may be null if comparator allows nulls. Otherwise, throws the same exception as comparator called
      *                   by List#sort would.
+     * @return true if this list changed as a result of the call.
      */
-    public void put(E newElement) {
+    public boolean put(E newElement) {
 
         // we don't want to depend on comparator exception later in the code, because that would allow first null to be
         // inserted
         validateNullability(newElement);
 
         ListIterator<E> listIterator = delegate.listIterator();
-        while (listIterator.hasNext()) {
-            E elementInList = listIterator.next();
-            if (newElementIsSameOrAfterElementInList(newElement, elementInList)) {
-                // The new element is already after the element in the list. We need get one step back by calling
-                // listIterator.previous() to use listIterator.add(newElement)
-                // we know that there is previous, because we called next() earlier
-                listIterator.previous();
-                listIterator.add(newElement);
-                return;
-            }
-        }
+        moveListIteratorToPositionToAddNewElement(newElement, listIterator);
         listIterator.add(newElement);
+        return true;
+    }
+
+    /**
+     * Puts a content of the newElements collection into the list.
+     *
+     * @param newElements may be null. May contain null if comparator allows nulls. Otherwise, throws the same exception as comparator called
+     *                    by List#sort would.
+     * @return true if this list changed as a result of the call.
+     */
+    public boolean putAll(Collection<? extends E> newElements) {
+        if (newElements == null) {
+            return false;
+        }
+
+        //defensive copy, because we'll depend on sorting
+        List<E> newElementsCopy = new ArrayList<>(newElements);
+        newElementsCopy.sort(comparator);
+
+        ListIterator<E> listIterator = delegate.listIterator();
+        for (E newElement : newElementsCopy) {
+            moveListIteratorToPositionToAddNewElement(newElement, listIterator);
+            listIterator.add(newElement);
+        }
+        return !newElements.isEmpty();
     }
 
 
@@ -65,25 +82,41 @@ public class SortedLinkedList<E> implements List<E> {
         }
     }
 
-    private boolean newElementIsSameOrAfterElementInList(E newElement, E elementInList) {
+    private boolean elementInListIsSameOrAfterNewElement(E elementInList, E newElement) {
         //compare("B","A") = 1
         return comparator.compare(elementInList, newElement) >= 0;
     }
 
 
-    public boolean putAll(Collection<? extends E> c) {
-        throw new RuntimeException("Not implemented");
+    /**
+     * Method that moves iterator to the position, where add can be called ti insert new element. Method has a side effect -
+     * it changes listIterator.
+     *
+     * @param newElement will be compared to existing elements in the list to find the correct position of the iterator.
+     * @param listIterator may be changed by method
+     */
+    private void moveListIteratorToPositionToAddNewElement(E newElement, ListIterator<E> listIterator) {
+        while (listIterator.hasNext()) {
+            E elementInList = listIterator.next();
+            if (elementInListIsSameOrAfterNewElement(elementInList, newElement)) {
+                // The new element is already after the element in the list. We need get one step back by calling
+                // listIterator.previous() to use listIterator.add(newElement)
+                // we know that there is previous, because we called next() earlier
+                listIterator.previous();
+                break;
+            }
+        }
     }
 
 
     //Unsupported methods - see README.md
 
     /**
-     * Sorting by different comparator is not supported yet.
+     * Sorting by different comparator is not supported.
      */
     @Override
-    public void sort(final Comparator<? super E> c) {
-        throw new UnsupportedOperationException();
+    public void sort(Comparator<? super E> c) {
+        throw new UnsupportedOperationException("Sorting by different comparator is not supported");
     }
 
     @Override
@@ -107,7 +140,7 @@ public class SortedLinkedList<E> implements List<E> {
     }
 
     @Override
-    public void replaceAll(final UnaryOperator<E> operator) {
+    public void replaceAll(UnaryOperator<E> operator) {
         throw new UnsupportedOperationException();
     }
 
@@ -218,12 +251,12 @@ public class SortedLinkedList<E> implements List<E> {
     }
 
     @Override
-    public <T> T[] toArray(final IntFunction<T[]> generator) {
+    public <T> T[] toArray(IntFunction<T[]> generator) {
         return delegate.toArray(generator);
     }
 
     @Override
-    public boolean removeIf(final Predicate<? super E> filter) {
+    public boolean removeIf(Predicate<? super E> filter) {
         return delegate.removeIf(filter);
     }
 
@@ -238,7 +271,7 @@ public class SortedLinkedList<E> implements List<E> {
     }
 
     @Override
-    public void forEach(final Consumer<? super E> action) {
+    public void forEach(Consumer<? super E> action) {
         delegate.forEach(action);
     }
 

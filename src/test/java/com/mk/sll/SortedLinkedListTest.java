@@ -3,7 +3,9 @@ package com.mk.sll;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -41,13 +43,13 @@ public class SortedLinkedListTest {
 
 
     @Test
-    public void putOneElement() {
+    public void put_oneElement() {
         tested.put("A");
         assertThat(tested).containsExactly("A");
     }
 
     @Test
-    public void putMoreElementsInCorrectOrder() {
+    public void put_moreElementsInCorrectOrder() {
         tested.put("A");
         tested.put("B");
         tested.put("C");
@@ -55,7 +57,7 @@ public class SortedLinkedListTest {
     }
 
     @Test
-    public void putMoreElementsInReverseOrder() {
+    public void put_moreElementsInReverseOrder() {
         tested.put("C");
         tested.put("B");
         tested.put("A");
@@ -63,10 +65,18 @@ public class SortedLinkedListTest {
     }
 
     @Test
-    public void putMoreSameElements() {
+    public void put_moreSameElements() {
         tested.put("C");
         tested.put("B");
         tested.put("A");
+        assertThat(tested).containsExactly("A", "B", "C");
+    }
+
+    @Test
+    public void put_insertAnElementBetweenTwoElements() {
+        tested.put("A");
+        tested.put("C");
+        tested.put("B");
         assertThat(tested).containsExactly("A", "B", "C");
     }
 
@@ -76,18 +86,18 @@ public class SortedLinkedListTest {
      * if we'd depend on comparator exception. This test tests wo don't.
      */
     @Test
-    public void putNullComparatorDoesntSupportNulls() {
+    public void put_nullComparatorDoesntSupportNulls() {
         assertThatThrownBy(() -> tested.put(null)).isInstanceOf(NullPointerException.class);
     }
 
     @Test
-    public void putNullNotFirstComparatorDoesntSupportNulls() {
+    public void put_nullNotFirstComparatorDoesntSupportNulls() {
         tested.put("A");
         assertThatThrownBy(() -> tested.put(null)).isInstanceOf(NullPointerException.class);
     }
 
     @Test
-    public void putNullComparatorSupportsNulls() {
+    public void put_nullComparatorSupportsNulls() {
         tested = new SortedLinkedList<>(STRING_COMPARATOR_SUPPORTING_NULL);
 
         tested.put(null);
@@ -97,7 +107,7 @@ public class SortedLinkedListTest {
     }
 
     @Test
-    public void putNullNotFirstComparatorSupportsNulls() {
+    public void put_nullNotFirstComparatorSupportsNulls() {
         tested = new SortedLinkedList<>(STRING_COMPARATOR_SUPPORTING_NULL);
 
         tested.put("A");
@@ -106,5 +116,71 @@ public class SortedLinkedListTest {
         //assertj doesn't support containsExactly(null)
         assertThat(tested.get(0)).isNull();
         assertThat(tested.get(1)).isEqualTo("A");
+    }
+
+
+    @Test
+    public void putAll_nullInputIntoEmptyList() {
+        tested.putAll(null);
+        assertThat(tested).isEmpty();
+    }
+
+    @Test
+    public void putAll_emptyInputIntoEmptyList() {
+        tested.putAll(new ArrayList<>());
+        assertThat(tested).isEmpty();
+    }
+
+    @Test
+    public void putAll_nullInputIntoNonEmptyList() {
+        tested.put("A");
+        tested.putAll(null);
+        assertThat(tested).containsExactly("A");
+    }
+
+    @Test
+    public void putAll_emptyInputIntoNonEmptyList() {
+        tested.put("A");
+        tested.putAll(new ArrayList<>());
+        assertThat(tested).containsExactly("A");
+    }
+
+
+    @Test
+    public void putAll_oneNewElementIntoEmptyList() {
+        tested.putAll(List.of("B"));
+        assertThat(tested).containsExactly("B");
+    }
+
+
+    @Test
+    public void putAll_oneNewElementIntoExistingList() {
+        tested.put("A");
+        tested.put("C");
+
+        tested.putAll(List.of("B"));
+
+        assertThat(tested).containsExactly("A", "B", "C");
+    }
+
+    @Test
+    public void putAll_oneNewElementToTheEndOfAnExistingList() {
+        tested.put("A");
+        tested.put("B");
+
+        tested.putAll(List.of("C"));
+
+        assertThat(tested).containsExactly("A", "B", "C");
+    }
+
+
+    @Test
+    public void putAll_elementsAreAlreadyPresent() {
+        tested.put("A");
+        tested.put("B");
+
+        tested.putAll(List.of("A","B"));
+
+        assertThat(tested).containsExactly("A","A","B", "B");
     }
 }
