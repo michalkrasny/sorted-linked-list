@@ -78,7 +78,7 @@ public class SortedLinkedList<E> implements List<E> {
     private void validateNullability(final E newElement) {
         if (newElement == null) {
             // I don't want to over-engineer this. If comparator can compare nulls, then we'll allow it, otherwise not.
-            //noinspection EqualsWithItself,ResultOfMethodCallIgnored
+            //noinspection EqualsWithItself,ResultOfMethodCallIgnored,ConstantValue
             comparator.compare(newElement, newElement);
         }
     }
@@ -93,7 +93,7 @@ public class SortedLinkedList<E> implements List<E> {
      * Method that moves iterator to the position, where add can be called ti insert new element. Method has a side effect -
      * it changes listIterator.
      *
-     * @param newElement will be compared to existing elements in the list to find the correct position of the iterator.
+     * @param newElement   will be compared to existing elements in the list to find the correct position of the iterator.
      * @param listIterator may be changed by method
      */
     private void moveListIteratorToPositionToAddNewElement(E newElement, ListIterator<E> listIterator) {
@@ -133,6 +133,12 @@ public class SortedLinkedList<E> implements List<E> {
     @Override
     public boolean addAll(Collection<? extends E> c) {
         throw new UnsupportedOperationException("Use putAll instead");
+    }
+
+
+    @Override
+    public boolean addAll(int index, Collection<? extends E> c) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -187,11 +193,6 @@ public class SortedLinkedList<E> implements List<E> {
     @Override
     public boolean containsAll(Collection<?> c) {
         return delegate.containsAll(c);
-    }
-
-    @Override
-    public boolean addAll(int index, Collection<? extends E> c) {
-        throw new UnsupportedOperationException();
     }
 
     @Override

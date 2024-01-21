@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -245,6 +246,186 @@ public class SortedLinkedListTest {
     }
 
 
-    //smoke tests for delegated methods
+    //Smoke tests for delegated methods. We test that they are delegated, but otherwise we trust delegated implementation.  
+
+    @Test
+    public void size() {
+        tested.put("A");
+        int result = tested.size();
+        assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    public void isEmpty() {
+        tested.put("A");
+        boolean result = tested.isEmpty();
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void contains() {
+        tested.put("A");
+        boolean result = tested.contains("A");
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void iterator() {
+        tested.put("A");
+        Iterator<String> result = tested.iterator();
+        assertThat(result.next()).isEqualTo("A");
+    }
+
+    @Test
+    public void toArray() {
+        tested.put("A");
+        Object[] result = tested.toArray();
+        assertThat(result[0]).isEqualTo("A");
+    }
+
+    @Test
+    public void toArray_generic() {
+        tested.put("A");
+        String[] result = tested.toArray(new String[0]);
+        assertThat(result[0]).isEqualTo("A");
+    }
+
+
+    @Test
+    public void remove_object() {
+        tested.put("A");
+        tested.put("B");
+        tested.remove("A");
+        assertThat(tested).containsExactly("B");
+    }
+
+    @Test
+    public void containsAll() {
+        tested.put("A");
+        tested.put("B");
+        boolean result = tested.containsAll(List.of("A", "B"));
+        assertThat(result).isTrue();
+    }
+
+
+    @Test
+    public void removeAll() {
+        tested.put("A");
+        tested.put("B");
+        tested.removeAll(List.of("A", "B"));
+        assertThat(tested).isEmpty();
+    }
+
+    @Test
+    public void retainAll() {
+        tested.put("A");
+        tested.put("B");
+        tested.retainAll(List.of("A"));
+        assertThat(tested).containsExactly("A");
+    }
+
+    @Test
+    public void clear() {
+        tested.put("A");
+        tested.put("B");
+        tested.clear();
+        assertThat(tested).isEmpty();
+    }
+
+    @Test
+    public void get() {
+        tested.put("A");
+        tested.put("B");
+        assertThat(tested.get(1)).isEqualTo("B");
+    }
+
+
+    @Test
+    public void remove_atPosition() {
+        tested.put("A");
+        tested.put("B");
+        tested.put("C");
+        tested.remove(1);
+        assertThat(tested).containsExactly("A", "C");
+    }
+
+    @Test
+    public void indexOf() {
+        tested.put("A");
+        tested.put("B");
+
+        assertThat(tested.indexOf("B")).isEqualTo(1);
+    }
+
+    @Test
+    public void lastIndexOf() {
+        tested.put("A");
+        tested.put("B");
+        tested.put("B");
+
+        assertThat(tested.lastIndexOf("B")).isEqualTo(2);
+    }
+
+    @Test
+    public void listIterator() {
+        assertThat(tested.listIterator()).isNotNull();
+    }
+
+    @Test
+    public void listIterator_index() {
+        assertThat(tested.listIterator(0)).isNotNull();
+    }
+
+    @Test
+    public void subList() {
+        tested.put("A");
+        tested.put("B");
+        tested.put("C");
+        List<String> result = tested.subList(1, 2);
+        assertThat(result).containsExactly("B");
+    }
+
+
+    @Test
+    public void spliterator() {
+        assertThat(tested.spliterator()).isNotNull();
+    }
+
+    @Test
+    public void toArray_generator() {
+        tested.put("A");
+        String[] result = tested.toArray(String[]::new);
+        assertThat(result).containsExactly("A");
+    }
+
+    @Test
+    public void removeIf() {
+        tested.put("A");
+        tested.put("B");
+        tested.removeIf(element -> element.equals("A"));
+        assertThat(tested).containsExactly("B");
+    }
+
+    @Test
+    public void stream() {
+        assertThat(tested.stream()).isNotNull();
+    }
+
+
+    @Test
+    public void parallelStream() {
+        assertThat(tested.parallelStream()).isNotNull();
+    }
+
+
+    @Test
+    public void forEach() {
+        tested.put("A");
+        tested.put("B");
+        StringBuilder sb = new StringBuilder();
+        tested.forEach(sb::append);
+        String result = sb.toString();
+        assertThat(result).isEqualTo("AB");
+    }
 
 }
