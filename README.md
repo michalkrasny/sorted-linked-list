@@ -19,6 +19,14 @@ that will enable us to insert new elements and won't break the contract.
 This interface **should not** be implemented. SortedLinkedList.java is sorted, adding a value to the beginning or the end
 of the list would be confusing, because the added value may end up somewhere else after it is sorted.  
 
+## Thread safety
+List won't be thread safe, because it would make the implementation more complex with potential impact
+on performance. If we wanted a ConcurrentSortedLinkedList, we'd need to separate write operations from
+read operations and from each other.
+
+## Null elements
+The problem with null elements is that they may not be supported by comparator. We'll support null elements
+if comparator can compare them.
 
 ## Design
 

@@ -16,16 +16,67 @@ public class SortedLinkedList<E> implements List<E> {
 
     private final LinkedList<E> delegate = new LinkedList<>();
 
-    public void put(E element) {
-        throw new RuntimeException("Not implemented");
+    private final Comparator<E> comparator;
+
+    public SortedLinkedList(Comparator<E> comparator) {
+        this.comparator = comparator;
     }
+
+    /**
+     * Puts a new element into correct place of already sorted list. Iterates through the list until it finds
+     * correct position to insert the new element.
+     *
+     * @param newElement may be null if comparator allows nulls. Otherwise, throws the same exception as comparator called
+     *                   by List#sort would.
+     */
+    public void put(E newElement) {
+
+        // we don't want to depend on comparator exception later in the code, because that would allow first null to be
+        // inserted
+        validateNullability(newElement);
+
+        ListIterator<E> listIterator = delegate.listIterator();
+        while (listIterator.hasNext()) {
+            E elementInList = listIterator.next();
+            if (newElementIsSameOrAfterElementInList(newElement, elementInList)) {
+                // The new element is already after the element in the list. We need get one step back by calling
+                // listIterator.previous() to use listIterator.add(newElement)
+                // we know that there is previous, because we called next() earlier
+                listIterator.previous();
+                listIterator.add(newElement);
+                return;
+            }
+        }
+        listIterator.add(newElement);
+    }
+
+
+    /**
+     * The main reason why null values wouldn't be allowed is that comparator couldn't cope with it. If it can, then we'll
+     * allow them.
+     *
+     * @param newElement - nullable
+     */
+    private void validateNullability(final E newElement) {
+        if (newElement == null) {
+            // I don't want to over-engineer this. If comparator can compare nulls, then we'll allow it, otherwise not.
+            //noinspection EqualsWithItself,ResultOfMethodCallIgnored
+            comparator.compare(newElement, newElement);
+        }
+    }
+
+    private boolean newElementIsSameOrAfterElementInList(E newElement, E elementInList) {
+        //compare("B","A") = 1
+        return comparator.compare(elementInList, newElement) >= 0;
+    }
+
 
     public boolean putAll(Collection<? extends E> c) {
         throw new RuntimeException("Not implemented");
     }
 
 
-//Unsupported methods - see README.md
+    //Unsupported methods - see README.md
 
     /**
      * Sorting by different comparator is not supported yet.
