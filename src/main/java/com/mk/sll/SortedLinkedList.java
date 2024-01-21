@@ -108,7 +108,7 @@ public class SortedLinkedList<E> implements List<E> {
 
     @Override
     public void replaceAll(final UnaryOperator<E> operator) {
-        List.super.replaceAll(operator);
+        throw new UnsupportedOperationException();
     }
 
 

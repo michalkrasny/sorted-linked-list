@@ -10,8 +10,8 @@ The main difference is that it keeps the values sorted, so it doesn't make sense
 
 ### java.util.List<E>
 This interface should be implemented, because `SortedLinkedList.java` is a list by nature. However, there is a pitfall in
-the contract of methods `add`, `addAll` and `set`. The `List` interface says, that `add` and `addAll` put the elements at the end of the
-list, which doesn't make sense if the list is sorted. Method set doesn't make sense in a sorted list too.
+the contract of methods `add`, `addAll`, `set` and `replaceAll`. The `List` interface says, that `add` and `addAll` put the elements at the end of the
+list, which doesn't make sense if the list is sorted. Methods `set` and `replaceAll` don't make sense in a sorted list too.
 These operations are optional, so we will throw an `UnsupportedOperationException` and implement our own methods put and putAll
 that will enable us to insert new elements and won't break the contract.
 
@@ -35,7 +35,7 @@ To implement `SortedLinkedList` we can
 2. take advantage of `java.util.AbstractSequentialList<E>`, 
 3. use `java.util.LinkedList<E>` to implement the required linked list features using Delegation pattern https://en.wikipedia.org/wiki/Delegation_pattern
 (aggregation) and write just sorting ourselves. We just need to implement sorting, all other methods like size, iterator() and will work the same way.
-To meet the List contract we won't support `add`, `addAll` and `set` and use `put` and `putAll` instead. See chapter Implemented interfaces/java.util.List<E>.
+To meet the List contract we won't support `add`, `addAll`, `set` and `replaceAll` and use `put` and `putAll` instead. See chapter Implemented interfaces/java.util.List<E>.
 
 I chose option 3. - delegation to LinkedList, because it is the most cost-effective solution and I agree with the chapter in
 Effective Java by Joshua Bloch (Item 47) that you should prefer standard libraries over a custom code.
