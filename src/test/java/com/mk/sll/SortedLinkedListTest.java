@@ -14,11 +14,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SortedLinkedListTest {
 
-    public static final Comparator<String> STRING_COMPARATOR_DEFAULT = Comparator.comparing((String x) -> x);
+    private static final Comparator<String> STRING_COMPARATOR_DEFAULT = Comparator.comparing((String x) -> x);
 
-    public static final Comparator<Integer> INTEGER_COMPARATOR_DEFAULT = Comparator.comparing((Integer x) -> x);
+    private static final Comparator<Integer> INTEGER_COMPARATOR_DEFAULT = Comparator.comparing((Integer x) -> x);
 
-    public static final Comparator<String> STRING_COMPARATOR_SUPPORTING_NULL = (o1, o2) -> {
+    private static final Comparator<String> STRING_COMPARATOR_SUPPORTING_NULL = (o1, o2) -> {
 
         //same null or non-null instance
         //noinspection StringEquality
